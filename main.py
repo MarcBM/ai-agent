@@ -2,6 +2,7 @@ import os
 import sys
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 def main():
   if len(sys.argv) < 2:
@@ -18,9 +19,20 @@ def main():
 
   client = genai.Client(api_key=api_key)
   
+  messages = [
+    types.Content(
+      role="user",
+      parts=[
+        types.Part(
+          text=prompt
+        )
+      ]
+    )
+  ]
+  
   response = client.models.generate_content(
   model="gemini-2.0-flash-001",
-  contents=prompt
+  contents=messages
   )
   print(response.text)
   print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
