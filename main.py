@@ -9,6 +9,16 @@ def main():
     print("Usage: python main.py <prompt>")
     sys.exit(1)
     
+  flags = []
+  if len(sys.argv) > 2:
+    flags = sys.argv[2:]
+  if not flags:
+    print("No flags provided. Using default settings.")
+  else:
+    print(f"Flags provided: {', '.join(flags)}")
+  
+  verbose = "--verbose" in flags
+    
   prompt = sys.argv[1]
   if not prompt:
     print("Prompt cannot be empty.")
@@ -35,8 +45,11 @@ def main():
   contents=messages
   )
   print(response.text)
-  print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-  print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+  
+  if verbose:
+    print(f"User prompt: {prompt}")
+    print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+    print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 
 if __name__ == "__main__":
   main()
