@@ -16,10 +16,10 @@ def decl_get_files_info():
   )
   return schema_get_files_info
 
-def decl_get_file_contents():
+def decl_get_file_content():
   schema_get_file_contents = types.FunctionDeclaration(
-    name="get_file_contents",
-    description="Retrieves the contents of a specified file, constrained to the working directory. Returns a maximum of 10000 characters.",
+    name="get_file_content",
+    description="Retrieves the content of a specified file, constrained to the working directory. Returns a maximum of 10000 characters.",
     parameters=types.Schema(
       type=types.Type.OBJECT,
       properties={
@@ -71,7 +71,7 @@ def decl_write_file():
 def build_function_declarations():
   function_declarations = []
   function_declarations.append(decl_get_files_info())
-  function_declarations.append(decl_get_file_contents())
+  function_declarations.append(decl_get_file_content())
   function_declarations.append(decl_run_python_file())
   function_declarations.append(decl_write_file())
   

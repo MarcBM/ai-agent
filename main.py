@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from functions.declarations import build_function_declarations
+from functions.call_functions import call_function
 
 def main():
   if len(sys.argv) < 2:
@@ -67,7 +68,11 @@ All paths you provide should be relative to the working directory. You do not ne
   
   if response.function_calls:
     for call in response.function_calls:
-      print(f"Calling function: {call.name}({call.args})")
+      result = call_function(call, verbose=verbose)
+      if not result.parts[0].function_response.response:
+        raise Exception(f"Function {call.name} returned no response.")
+      if verbose:
+        print(f"-> {result.parts[0].function_response.response}")
   else:
     print(response.text)
   
