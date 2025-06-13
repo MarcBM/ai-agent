@@ -12,9 +12,7 @@ def main():
   flags = []
   if len(sys.argv) > 2:
     flags = sys.argv[2:]
-  if not flags:
-    print("No flags provided. Using default settings.")
-  else:
+  if flags:
     print(f"Flags provided: {', '.join(flags)}")
   
   verbose = "--verbose" in flags
@@ -26,6 +24,8 @@ def main():
   
   load_dotenv()
   api_key = os.environ.get("GEMINI_API_KEY")
+  model_name = os.environ.get("MODEL_NAME", "gemini-2.0-flash-001")
+  system_prompt = os.environ.get("SYSTEM_PROMPT")
 
   client = genai.Client(api_key=api_key)
   
@@ -41,8 +41,11 @@ def main():
   ]
   
   response = client.models.generate_content(
-  model="gemini-2.0-flash-001",
-  contents=messages
+    model="gemini-2.0-flash-001",
+    contents=messages,
+    config=types.GenerateContentConfig(
+      system_instruction=system_prompt
+    )
   )
   print(response.text)
   
